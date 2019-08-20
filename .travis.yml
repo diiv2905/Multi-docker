@@ -3,14 +3,14 @@ sudo: required
 services:
   -docker
 
-before-install:
+before_install:
  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
  - docker build -t divyagupta2905/react-test -f ./client/Dockerfile.dev ./client
 
 script:
  - docker run -e CI=true divyagupta2905/react-test npm test  
 
-after-success:
+after_success:
   - docker build divyagupta2905/multi-client ./client
   - docker build divyagupta2905/multi-server ./server
   - docker build divyagupta2905/multi-worker ./worker

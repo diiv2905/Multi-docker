@@ -1,0 +1,24 @@
+sudo: required
+language: generic 
+services: 
+  -docker
+
+before-install:
+ - docker build -t divyagupta2905/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+ - docker run divyagupta2905/react-test npm test -- -- coverage
+
+after-success:
+  - docker build divyagupta2905/multi-client ./client
+  - docker build divyagupta2905/multi-server ./server
+  - docker build divyagupta2905/multi-worker ./worker
+  - docker build divyagupta2905/multi-nginx ./nginx
+  
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push divyagupta2905/multi-client
+  - docker push divyagupta2905/multi-server
+  - dokcer push divyagupta2905/multi-worker
+  - docker push divyagupta2905/multi-nginx
+  

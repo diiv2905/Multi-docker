@@ -4,11 +4,11 @@ services:
   -docker
 
 before_install:
- - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
- - docker build -t divyagupta2905/react-test -f ./client/Dockerfile.dev ./client
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker build -t divyagupta2905/react-test -f ./client/Dockerfile.dev ./client
 
 script:
- - docker run divyagupta2905/react-test npm test -- --coverage
+  - docker run divyagupta2905/react-test npm test -- --coverage
 
 after_success:
   - docker build divyagupta2905/multi-client ./client
